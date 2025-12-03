@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from typing import List, Optional
 from datetime import datetime
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from feature_store.config import settings
 from feature_store.core.registry.db import SessionLocal
 from feature_store.core.registry.models import Feature, FeatureVersion
@@ -63,7 +63,11 @@ class FeatureStore:
         """Retrieve full feature details by name"""
         session: Session = SessionLocal()
         try:
-            return session.query(Feature).filter(Feature.name == name).first()
+            # joinedload ensures 'versions' are fetched before session closes
+            return session.query(Feature)\
+                .options(joinedload(Feature.versions))\
+                .filter(Feature.name == name)\
+                .first()
         finally:
             session.close()
             
