@@ -1,0 +1,10 @@
+pandas>=2.0.0
+numpy
+sqlalchemy>=2.0.0
+pydantic>=2.0.0
+pydantic-settings
+pyarrow
+fastapi
+uvicorn
+python-dotenv
+duckdb
